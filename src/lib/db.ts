@@ -28,7 +28,11 @@ export type Order = {
 
 export type DB = { reservations: Reservation[]; orders: Order[] };
 
-const dir = path.join(process.cwd(), "data");
+const isVercel = process.env.VERCEL === "1";
+// Locally store next to the project; on Vercel the cwd is read-only, so use /tmp.
+const dir = isVercel
+  ? "/tmp/cresent-admin"
+  : path.join(process.cwd(), "data");
 const file = path.join(dir, "db.json");
 
 function seed(): DB {
